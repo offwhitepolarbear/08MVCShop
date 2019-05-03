@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="ProductMapper">
+		
+	<resultMap id="productMap" type="product">
+		<result property="fileName" 		column="image_file" 			jdbcType="VARCHAR"/>
+		<result property="manuDate"		column="manufacture_day" 	jdbcType="VARCHAR" />
+		<result property="price" 				column="price" 					jdbcType="NUMERIC" />
+		<result property="prodDetail" 		column="prod_detail" 			jdbcType="VARCHAR" />
+		<result property="prodName" 		column="prod_name" 			jdbcType="VARCHAR" />
+		<result property="prodNo" 			column="prod_no" 				jdbcType="NUMERIC" />
+		<result property="regDate" 			column="reg_date" 				jdbcType="DATE" />
+		<result property="proTranCode" 	column="tran_status_code" 	jdbcType="CHAR"  />
+	</resultMap>
+	
+	<insert id="addProduct" parameterType="product" >
+	INSERT INTO
+	product (prod_no, prod_name, prod_detail, 
+					manufacture_day, price, image_file, reg_date)
+	VALUES (seq_product_prod_no.nextval,
+				 	#{prodName}, #{prodDetail}, #{manuDate},
+				 	#{price}, #{fileName}, SYSDATE)
+	</insert>
+	
+	<select id="getProduct" parameterType="int" resultMap="productMap">
+	SELECT
+	pd.prod_no, pd.prod_name, pd.prod_detail, 
+	pd.manufacture_day, pd.price, pd.image_file, 
+	pd.reg_date, tr.tran_status_code 
+	FROM product pd, transaction tr 
+	WHERE pd.prod_no=tr.prod_no(+)
+	AND pd.prod_no = #{value}
+	</select>
+	
+	<update id="updateProduct" parameterType="product" >
+		UPDATE
+		product 
+		<set>
+			prod_name= #{prodName},					  
+			prod_detail =  #{prodDetail},
+			manufacture_day = #{manuDate},
+			price = #{price},
+			image_file = #{fileName}
+		</set>
+		WHERE prod_no = #{prodNo}
+	</update>
+	
+	<select  id="getProductList"  parameterType="search"	resultMap="productMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(		SELECT
+	pd.prod_no, pd.prod_name, pd.prod_detail, 
+	pd.manufacture_day, pd.price, pd.image_file, 
+	pd.reg_date, tr.tran_status_code 
+	FROM product pd, transaction tr 
+	<where>
+		pd.prod_no=tr.prod_no(+)
+		
+		<if test="listSale==0"></if>
+		<if test="listSale==1">
+		AND (tr.tran_status_code IS NULL OR tr.tran_status_code =4)
+		</if>
+		<if test="listSale==2">
+		AND (tr.tran_status_code=1 OR tr.tran_status_code=2 OR tr.tran_status_code=3)
+		</if>
+		<if test="searchCondition == 0 and searchKeyword !='' ">
+			AND pd.prod_no like  '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 1 and searchKeyword !='' ">
+			AND pd.prod_name like  '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 2 and searchKeyword !='' ">
+			AND pd.price like  '%' ||#{searchKeyword}|| '%'
+		</if>
+	</where>
+		ORDER BY
+		<if test= " orderBy == 0 ">
+		 pd.prod_no DESC
+		</if>
+		<if test= " orderBy == 1 ">
+		pd.price
+		</if>
+		<if test= " orderBy == 2 ">
+		pd.price DESC
+		</if>
+		 ) inner_table
+		WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
+	
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT pd.prod_no,tr.tran_status_code
+						FROM product pd, transaction tr 
+	<where>
+		pd.prod_no=tr.prod_no(+)
+		
+		<if test="listSale==0"></if>
+		<if test="listSale==1">
+		AND (tr.tran_status_code IS NULL OR tr.tran_status_code =4)
+		</if>
+		<if test="listSale==2">
+		AND (tr.tran_status_code=1 OR tr.tran_status_code=2 OR tr.tran_status_code=3)
+		</if>
+		<if test="searchCondition == 0 and searchKeyword !='' ">
+			AND pd.prod_no like  '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 1 and searchKeyword !='' ">
+			AND pd.prod_name like  '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 2 and searchKeyword !='' ">
+			AND pd.price like  '%' ||#{searchKeyword}|| '%'
+		</if>
+	</where>
+						 ) countTable						
+	 </select>
+	
+	</mapper>
