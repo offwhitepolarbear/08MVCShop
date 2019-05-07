@@ -42,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list );
 		map.put("totalCount", new Integer(totalCount));
+		map.put("search", search);
 		
 		return map;
 	}

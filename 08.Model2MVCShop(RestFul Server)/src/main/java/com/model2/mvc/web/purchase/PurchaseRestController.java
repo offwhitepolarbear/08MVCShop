@@ -1,7 +1,5 @@
 package com.model2.mvc.web.purchase;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +44,7 @@ public class PurchaseRestController {
 			value = "json/updateTranCode/{tranNo}/{tranCode}",
 			method = RequestMethod.POST)
 	public Purchase updateTranCode(@PathVariable String tranNo, @PathVariable String tranCode) throws Exception {
-		
+	
 		//RequestBody로 퍼체이스를 못뽑는데 이유가 뭔지?
 		
 		System.out.println("/purchase/json/updateTranCode : POST 호출성공");

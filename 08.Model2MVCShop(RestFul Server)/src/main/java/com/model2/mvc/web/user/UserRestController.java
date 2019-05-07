@@ -1,5 +1,6 @@
 package com.model2.mvc.web.user;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +81,19 @@ public class UserRestController {
 		
 		Map<String , Object> returnMap = userService.getUserList(search);
 		
+		return returnMap;
+		
+	}
+	
+	@RequestMapping( value="json/checkDuplication", method=RequestMethod.POST )
+	public Map checkDuplication(@RequestBody User user) throws Exception{
+		
+		boolean result = userService.checkDuplication(user.getUserId());
+		Map<String , Object> returnMap = new HashMap();
+		returnMap.put("result", result);
+		returnMap.put("userId", user.getUserId());
+		returnMap.put("word", "저는 서버에 다녀온 맵이 맞습니다.");
+	
 		return returnMap;
 		
 	}

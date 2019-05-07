@@ -126,7 +126,7 @@ public class UserController {
 		
 	
 	@RequestMapping( value="logout", method=RequestMethod.GET )
-	public String logout(HttpSession session ) throws Exception{
+	public String logout( HttpSession session ) throws Exception{
 		
 		System.out.println("/user/logout : POST");
 		
