@@ -115,7 +115,7 @@ public class ProductController {
 								System.out.println(e);
 							}
 						}else{
-							product.setFileName("../../images/empty.GIF");
+							product.setFileName("empty.png");
 					}
 				}
 				
