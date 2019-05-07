@@ -59,5 +59,16 @@ public class PurchaseRestController {
 		return purchase;
 
 	}
+	
+	@RequestMapping(value = "json/addPurchase", method = RequestMethod.POST)
+	public Purchase addPurchase(@RequestBody Purchase purchase) throws Exception {
+		System.out.println("/purchase/json/addPurchase : POST 호출성공");
+		System.out.println(purchase);
+
+		purchaseService.addPurchase(purchase);
+		purchase.setDivyRequest("리스폰스확인용 배송요청사항 수정");
+		return purchase;
+
+	}
 
 }
