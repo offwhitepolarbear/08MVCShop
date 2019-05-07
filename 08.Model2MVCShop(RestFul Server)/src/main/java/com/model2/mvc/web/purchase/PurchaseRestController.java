@@ -46,6 +46,9 @@ public class PurchaseRestController {
 			value = "json/updateTranCode/{tranNo}/{tranCode}",
 			method = RequestMethod.POST)
 	public Purchase updateTranCode(@PathVariable String tranNo, @PathVariable String tranCode) throws Exception {
+		
+		//RequestBody로 퍼체이스를 못뽑는데 이유가 뭔지?
+		
 		System.out.println("/purchase/json/updateTranCode : POST 호출성공");
 		Purchase purchase = new Purchase();
 		purchase.setTranNo(Integer.parseInt(tranNo));
@@ -53,9 +56,21 @@ public class PurchaseRestController {
 		System.out.println(purchase);
 
 		purchaseService.updateTranCode(purchase);
-
+		
 		purchase = purchaseService.getPurchase(purchase.getTranNo());
 
+		return purchase;
+
+	}
+	
+	@RequestMapping(value = "json/addPurchase", method = RequestMethod.POST)
+	public Purchase addPurchase(@RequestBody Purchase purchase) throws Exception {
+		System.out.println("/purchase/json/addPurchase : POST 호출성공");
+		System.out.println(purchase);
+
+		purchaseService.addPurchase(purchase);
+		System.out.println("addPurchase가 무사히 실행되면 출력됩니다.");
+		purchase.setDivyRequest("리스폰스확인용 배송요청사항 수정");
 		return purchase;
 
 	}
