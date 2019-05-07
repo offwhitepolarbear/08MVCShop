@@ -27,7 +27,7 @@ public class ProductRestController {
 	@RequestMapping( value="json/getProduct/{prodNo}", method=RequestMethod.GET )
 	public Product getProduct( @PathVariable String prodNo ) throws Exception{
 		
-		System.out.println("/user/json/getUser : GET");
+		System.out.println("/user/json/getProduct : GET");
 		
 		//Business Logic
 		return productService.getProduct(Integer.parseInt(prodNo));
@@ -42,7 +42,7 @@ public class ProductRestController {
 		System.out.println(product);
 		
 		productService.addProduct(product);
-		System.out.println("☆★☆★☆★addProduct 직후 왜안찍히는 거야?체크해줘☆★☆★☆★");
+		System.out.println("★★★addProduct 직후 체크해줘☆☆☆");
 		
 		product.setProTranCode("addProd 리턴값 확인용 임시 트랜코드.");
 		return product;
