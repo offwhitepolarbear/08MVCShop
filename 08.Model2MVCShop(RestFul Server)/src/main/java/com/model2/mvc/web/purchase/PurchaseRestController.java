@@ -1,5 +1,7 @@
 package com.model2.mvc.web.purchase;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.purchase.PurchaseService;
@@ -72,5 +75,25 @@ public class PurchaseRestController {
 		return purchase;
 
 	}
+	
+	@RequestMapping(value = "json/updatePurchase", method = RequestMethod.POST)
+	public Purchase updatePurchase(@RequestBody Purchase purchase) throws Exception {
+		
+		System.out.println("purchase/json/updatePurchase : POST ½ÇÇàµÊ");
+		purchaseService.updatePurchase(purchase);
+		Purchase rePurchase = purchaseService.getPurchase(purchase.getTranNo());
+		return rePurchase;
+		
+	}
+	
+	@RequestMapping(value = "json/listSalePurchase", method = RequestMethod.POST)
+	public Map listSalePurchase(@RequestBody Search search) throws Exception {
+		
+		System.out.println("purchase/json/listSalePurchase : POST ½ÇÇàµÊ");
+		Map map = purchaseService.getSaleList(search);
+		map.put("word", "RestÄÁÆ®·Ñ·¯json/listSalePurchase ´Ù³à¿Â ¸ÊÀÔ´Ï´Ù.");
+		return map;
+	}
+		
 
 }

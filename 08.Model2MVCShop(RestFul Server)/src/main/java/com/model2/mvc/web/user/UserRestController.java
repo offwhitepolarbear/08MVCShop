@@ -98,5 +98,15 @@ public class UserRestController {
 		
 	}
 	
+	@RequestMapping( value="json/addUser", method=RequestMethod.POST )
+	public User addUser(@RequestBody User user) throws Exception{
+		System.out.println("user/json/addUser :POST 리퀘스트 들어옴!!");
+		userService.addUser(user);
+		User reUser = userService.getUser(user.getUserId());
+		reUser.setSsn("서버에 다녀온 User맞습니다.");
+		return reUser;
+		
+	}
+	
 	
 }

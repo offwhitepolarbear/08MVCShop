@@ -8,7 +8,7 @@
 	
 	<!--	:: ContextLoaderListener 을 이용한 Business logic  Meta-Data 등록   -->		
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener	</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>		
 	 
 	<context-param>
